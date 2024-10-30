@@ -1,27 +1,47 @@
-import { Controller, Get, Post, Patch, Param, Body } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { UserDocument } from './schemas/user.schema';
 
 @Controller('users')
 export class UserController {
+    
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('/create')
   async create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
-  @Get()
-  async findAll() {}
+<<<<<<< HEAD
+  @Put('/update/:id')
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    try {
+      const existingUser = await this.userService.update(id, updateUserDto);
+=======
+    @Post('/create')
+    async create(@Body() createUserDto: CreateUserDto) {
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {}
+        return this.userService.create(createUserDto);
+>>>>>>> 164d51fecd66b6dd648eaa53e44ba147be4d77ee
 
-  @Patch('id')
-  async update(
-    @Param('id') id: string,
-    @Body() UpdateUserDto: Partial<CreateUserDto>,
-  ) {}
+      return {
+        message: 'User Has Been Successfully Updated',
+        existingUser,
+      };
+    } catch (err) {
+      throw new HttpException(
+        err.message || 'An error occurred during update',
+        err.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

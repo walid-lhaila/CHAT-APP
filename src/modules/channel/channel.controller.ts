@@ -24,4 +24,11 @@ export class ChannelController {
     await this.channelService.DeleteChannel(id);
     return { message: 'Channel deleted successfully' };
   }
+  @Post(':channelId/integrateUser')
+  async integrateUserIntoChannel(
+    @Param('channelId') channelId: string,
+    @Body('userId') userId: string,
+  ) {
+    return this.channelService.integrationUsersIntoChannel(channelId, userId);
+  }
 }

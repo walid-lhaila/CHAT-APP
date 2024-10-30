@@ -1,43 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { User, UserDocument } from './schemas/user.schema';
-import { CreateUserDto } from './dto/createUser.dto';
-import * as bcrypt from 'bcrypt';
+  import { Injectable, NotFoundException } from '@nestjs/common';
+  import { InjectModel } from '@nestjs/mongoose';
+  import { Model } from 'mongoose';
+  import { User, UserDocument } from './schemas/user.schema';
+  import { CreateUserDto } from './dto/createUser.dto';
+  import { UpdateUserDto } from './dto/updateUser.dto';
 
 
 
-@Injectable()
-export class UserService {
+  @Injectable()
+  export class UserService {
 
-    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+      constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-    
-    async create(createUserDto: CreateUserDto): Promise<UserDocument> {
       
-        const { password, ...userData } = createUserDto;  
-        const hashedPassword = await bcrypt.hash(password, 10);
-            
-        const createUser = new this.userModel({
-          ...userData,
-          password: hashedPassword,
-        });
+      async create(createUserDto: CreateUserDto): Promise<UserDocument> {
+  
+          const createUser = new this.userModel(createUserDto);
 
-        return createUser.save(); 
+          return createUser.save(); 
 
-    }
-    
-      async findAll() {
+      }
+      
+        async update(id: string, updateUserDto: UpdateUserDto): Promise<UserDocument> {
 
-    }
-    
-      async findOne(id: string){
+          const existingUser = await this.userModel.findByIdAndUpdate(id, updateUserDto, {new: true});
 
-    }
-    
-      async update(id: string, updateUserDto: Partial<CreateUserDto>) {
+          if(!existingUser) {
+            throw new NotFoundException(`User with #${id} not found`);
+          }
 
-    }
-    
+          return existingUser;
 
-}
+      }
+      
+
+  }

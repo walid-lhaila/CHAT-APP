@@ -1,28 +1,33 @@
-import { IsString, IsEmail, IsArray, IsOptional, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsArray,
+  IsOptional,
+  IsNumber,
+} from 'class-validator';
 
 export class CreateUserDto {
+  @IsString()
+  username: string;
 
-    @IsString()
-    username: string;
+  @IsEmail()
+  email: string;
 
-    @IsEmail()
-    email: string;
+  @IsOptional()
+  @IsString()
+  password: string;
 
-    @IsString()
-    password: string;
+  @IsString()
+  status: string;
 
-    @IsString()
-    status: string;
+  @IsArray()
+  @IsOptional()
+  friends?: string[];
 
-    @IsArray()
-    @IsOptional()
-    friends?: string[];
+  @IsArray()
+  @IsOptional()
+  channel?: string[];
 
-    @IsArray()
-    @IsOptional()
-    channel?: string[];
-
-    @IsNumber()
-    score: number;
-
+  @IsNumber()
+  score: number;
 }
