@@ -1,4 +1,4 @@
-import { IsString, IsArray, IsEnum, IsNotEmpty } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 export enum Type {
   'public',
