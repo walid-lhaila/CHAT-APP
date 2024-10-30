@@ -5,10 +5,8 @@ import { getMongoConfig } from './config/database.config';
 import { UserModule } from './modules/user/user.module';
 import { ChannelModule } from './modules/channel/channel.module';
 
-
 @Module({
   imports: [
-
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -19,10 +17,8 @@ import { ChannelModule } from './modules/channel/channel.module';
       inject: [ConfigService],
     }),
 
-
     UserModule,
     ChannelModule,
-
   ],
 })
 export class AppModule {}

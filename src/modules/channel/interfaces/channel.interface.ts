@@ -1,6 +1,6 @@
 export interface IChannel {
-    name: string;
-    members: string[];
-    type: string; 
-    badWords?: string[]; 
-  }
+  name: string;
+  members: number[];
+  type: string;
+  badWords?: string[];
+}

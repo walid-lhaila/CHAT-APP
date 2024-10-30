@@ -1,43 +1,27 @@
-import { Controller, Get, Post, Patch, Param, Body, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, Param } from '@nestjs/common';
 import { CreateChannelDto } from './dto/createChannel.dto';
 import { ChannelService } from '../channel/channel.service';
-import { UpdateChannelDto } from './dto/updateChannel.dto';
-
-
+import { Channel } from './schemas/channel.schema';
 
 @Controller('channels')
 export class ChannelController {
+  constructor(private readonly channelService: ChannelService) {}
 
-    constructor(private readonly channelService: ChannelService) {}
+  @Post()
+  async create(@Body() createChannelDto: CreateChannelDto) {
+    console.log(createChannelDto);
+    const channel = await this.channelService.CreateChannel(createChannelDto);
+    return { message: 'Channel created successfully', channel };
+  }
 
+  @Get()
+  async findAll(): Promise<Channel[]> {
+    return this.channelService.findAll();
+  }
 
-    @Post()
-    async create(@Body() createChannelDto: CreateChannelDto) {
-
-    }
-
-
-    @Get()
-    async findAll() {
-
-    }
-
-
-    @Get(':id')
-    async findOne(@Param('id') id: string) {
-
-    }
-
-
-    @Patch(':id')
-    async update(@Param('id') id: string, @Body() updateChannelDto: UpdateChannelDto) {
-
-    }
-
-
-    @Delete(':id')
-    async remove(@Param('id') id: string) {
-
-    }
-
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    await this.channelService.DeleteChannel(id);
+    return { message: 'Channel deleted successfully' };
+  }
 }
