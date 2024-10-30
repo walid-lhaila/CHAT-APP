@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Delete, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateChannelDto } from './dto/createChannel.dto';
 import { ChannelService } from '../channel/channel.service';
 import { Channel } from './schemas/channel.schema';
