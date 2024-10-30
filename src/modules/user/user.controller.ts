@@ -6,7 +6,6 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
 
 
     constructor(private readonly userService: UserService) {}
