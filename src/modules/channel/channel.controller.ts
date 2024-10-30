@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, Param } from '@nestjs/common';
 import { CreateChannelDto } from './dto/createChannel.dto';
 import { ChannelService } from '../channel/channel.service';
 import { Channel } from './schemas/channel.schema';
@@ -10,11 +10,18 @@ export class ChannelController {
   @Post()
   async create(@Body() createChannelDto: CreateChannelDto) {
     console.log(createChannelDto);
-    return this.channelService.CreateChannel(createChannelDto);
+    const channel = await this.channelService.CreateChannel(createChannelDto);
+    return { message: 'Channel created successfully', channel };
   }
 
   @Get()
   async findAll(): Promise<Channel[]> {
     return this.channelService.findAll();
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    await this.channelService.DeleteChannel(id);
+    return { message: 'Channel deleted successfully' };
   }
 }
