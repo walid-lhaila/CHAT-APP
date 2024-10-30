@@ -30,7 +30,7 @@ export class ChannelService {
     return await this.channelModel.find().exec();
   }
 
-  async DeleteChanel(id: string): Promise<void> {
+  async DeleteChannel(id: string): Promise<void> {
     await this.channelModel.findByIdAndDelete(id).exec();
   }
 }
