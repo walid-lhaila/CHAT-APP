@@ -9,7 +9,7 @@ export class Channel {
   Title: string;
 
   @Prop({ type: [Number], required: true })
-  members: number[];
+  members: string[];
 
   @Prop({ required: true, enum: ['public', 'private', 'conversation'] })
   type: string;

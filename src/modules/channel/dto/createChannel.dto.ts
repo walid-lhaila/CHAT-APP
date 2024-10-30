@@ -13,7 +13,7 @@ export class CreateChannelDto {
 
   @IsArray()
   @IsNotEmpty()
-  members: number[];
+  members: string[];
 
   @IsString()
   @IsNotEmpty()
