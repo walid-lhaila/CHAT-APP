@@ -1,17 +1,26 @@
-import { IsString, IsArray } from 'class-validator';
+import { IsString, IsArray, IsEnum, IsNotEmpty } from 'class-validator';
+
+export enum Type {
+  'public',
+  'private',
+  'conversation',
+}
 
 export class CreateChannelDto {
+  @IsString()
+  @IsNotEmpty()
+  Title: string;
 
-    @IsString()
-    name: string;
+  @IsArray()
+  @IsNotEmpty()
+  members: string[];
 
-    @IsArray()
-    members: string[];
+  @IsString()
+  @IsNotEmpty()
+  @IsEnum(Type)
+  type: string;
 
-    @IsString()
-    type: string;
-
-    @IsArray()
-    badWords: string[];
-
+  @IsArray()
+  @IsNotEmpty()
+  badWords: string[];
 }
