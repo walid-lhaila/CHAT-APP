@@ -17,9 +17,13 @@ export class ChannelController {
 
   @Post()
   async create(@Body() createChannelDto: CreateChannelDto) {
-    console.log(createChannelDto);
-    const channel = await this.channelService.CreateChannel(createChannelDto);
-    return { message: 'Channel created successfully', channel };
+    try {
+      const channel = await this.channelService.CreateChannel(createChannelDto);
+      return { message: 'Channel created successfully', channel };
+    } catch (err) {
+      console.error('Error in channel creation:', err.message);
+      return { message: 'Failed to create channel', error: err.message };
+    }
   }
 
   @Get()
