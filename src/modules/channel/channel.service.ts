@@ -11,20 +11,24 @@ export class ChannelService {
   ) {}
 
   async CreateChannel(createChannelDto: CreateChannelDto): Promise<Channel> {
-    const { Title, members, type, badWords } = createChannelDto;
+    const { Title, members, type, badWords, userId } = createChannelDto;
 
     const newChannel = new this.channelModel({
       Title,
       members,
       type,
       badWords,
+      userId,
     });
+
     try {
       return await newChannel.save();
     } catch (err) {
-      console.error('err', err);
+      console.error('Error creating channel:', err.message);
+      throw new Error('Unable to create channel. Please try again.');
     }
   }
+
 
   async findAllChannel(): Promise<Channel[]> {
     return await this.channelModel.find().exec();
