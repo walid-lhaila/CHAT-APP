@@ -57,4 +57,37 @@ export class ChannelService {
       throw new Error('Error integrating user into channel: ' + error.message);
     }
   }
+
+  async updateChannel(channelId: string, updatedChannel: Channel) {
+    try {
+      return await this.channelModel.findByIdAndUpdate(
+        channelId,
+        updatedChannel,
+        { new: true },
+      );
+    } catch (error) {
+      throw new Error('Error updating channel: ' + error.message);
+    }
+  }
+
+  async deleteUserFromChannel(userId: string, channelId: string) {
+    try {
+      const updatedChannel = await this.channelModel.findByIdAndUpdate(
+        channelId,
+        { $pull: { members: userId } },
+        { new: true },
+      );
+
+      if (!updatedChannel) {
+        return { message: 'Channel not found' };
+      }
+
+      return {
+        message: 'User successfully deleted from the channel',
+        channel: updatedChannel,
+      };
+    } catch (error) {
+      throw new Error('Error deleting user from channel: ' + error.message);
+    }
+  }
 }
