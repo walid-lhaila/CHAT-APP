@@ -4,6 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoConfig } from './config/database.config';
 import { UserModule } from './modules/user/user.module';
 import { ChannelModule } from './modules/channel/channel.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { RatingModule } from './modules/rating/rating.module';
 
 @Module({
   imports: [
@@ -19,6 +21,9 @@ import { ChannelModule } from './modules/channel/channel.module';
 
     UserModule,
     ChannelModule,
+    AuthModule,
+    RatingModule,
+
   ],
 })
 export class AppModule {}

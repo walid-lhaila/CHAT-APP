@@ -21,10 +21,7 @@ export class friendRequestCotroller {
         @Body() updateFriendRequestDto: UpdateFriendRequestDto,
     ) {
         return this.friendrequestService.update(id, updateFriendRequestDto)
-
-        // @Get('/:userId')
-        // async getPendingRequests(@Param('userId') userId: string){
-        //     return this.friendrequestService.getFriendRequestForUser(userId)
-        // }
+        
     }
+    
 }
