@@ -24,7 +24,7 @@ export class ChannelController {
 
   @Get()
   async findAll(): Promise<Channel[]> {
-    return this.channelService.findAll();
+    return this.channelService.findAllChannel();
   }
 
   @Delete(':id')
@@ -60,5 +60,18 @@ export class ChannelController {
   ) {
     await this.channelService.deleteUserFromChannel(userId, channelId);
     return { message: 'User deleted from channel successfully' };
+  }
+
+  @Get('publicChannel')
+  async getAllChannelWhereTypeIsPublic() {
+    return this.channelService.GetAllChannelWhereTypeIsPublic();
+  }
+
+  @Patch(':channelId/addBadWords')
+  async addBadWords(
+    @Param('channelId') channelId: string,
+    @Body('badWords') badWords: string[],
+  ) {
+    return this.channelService.AddBadWords(channelId, badWords);
   }
 }
