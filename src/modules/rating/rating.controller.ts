@@ -2,16 +2,15 @@ import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { RatingService } from './rating.service';
 
 
-@Controller('ratings')
+@Controller('rating')
 
 export class RatingController {
 
     constructor(private readonly ratingService: RatingService) {}
 
 
-    @Post('rate')
+    @Post('/rate')
     async createRating(
-
         @Body('raterId') raterId: string,
         @Body('userId') userId: string,
         @Body('score') score: number,
