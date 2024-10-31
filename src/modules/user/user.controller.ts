@@ -13,14 +13,12 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Controller('users')
 export class UserController {
-    
   constructor(private readonly userService: UserService) {}
 
   @Post('/create')
   async create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
-
 
   @Put('/update/:id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
