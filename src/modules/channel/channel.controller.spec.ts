@@ -10,8 +10,9 @@ describe('Channel Controller', () => {
 
   const mockChannelService = {
     CreateChannel: jest.fn(),
-    findAll: jest.fn(),
+    findAllChannel: jest.fn(),
     DeleteChannel: jest.fn(),
+    deleteUserFromChannel: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -25,7 +26,7 @@ describe('Channel Controller', () => {
   });
 
   describe("Creation d'un nouveau canal", () => {
-    test('devkit crier un canal et renderer un message de success', async () => {
+    test('test creation un canal et renderer un message de success', async () => {
       const createChannelDto: CreateChannelDto = {
         Title: 'Sample Channel',
         members: ['5'],
@@ -64,12 +65,13 @@ describe('Channel Controller', () => {
         { Title: 'Channel 2', members: ['3'], type: 'private', badWords: [] },
       ];
 
-      mockChannelService.findAll.mockResolvedValue(channelList);
+      mockChannelService.findAllChannel.mockResolvedValue(channelList);
 
       const response = await channelController.findAll();
+      console.log(response);
 
-      expect(response).toEqual(channelList);
-      expect(channelService.findAll).toHaveBeenCalledTimes(1);
+      expect(response).toBe(channelList);
+      expect(channelService.findAllChannel).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -84,6 +86,48 @@ describe('Channel Controller', () => {
       expect(response).toEqual({ message: 'Channel deleted successfully' });
       expect(channelService.DeleteChannel).toHaveBeenCalledWith(channelId);
       expect(channelService.DeleteChannel).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Suppression users from channel', () => {
+    const channelId = '12345';
+    const userId = '5';
+    test("devrait supprimer un user d'un canal et renvoyer un message de succès", async () => {
+      mockChannelService.deleteUserFromChannel.mockResolvedValue(undefined);
+
+      const response = await channelController.deleteUserFromChannel(
+        userId,
+        channelId,
+      );
+
+      expect(response).toEqual({
+        message: 'User deleted from channel successfully',
+      });
+      expect(channelService.deleteUserFromChannel).toHaveBeenCalledWith(
+        userId,
+        channelId,
+      );
+      expect(channelService.deleteUserFromChannel).toHaveBeenCalledTimes(1);
+    });
+
+    test("user doesn't exist", async () => {
+      mockChannelService.deleteUserFromChannel.mockResolvedValue({
+        message: 'User not found in the channel',
+      });
+
+      const response = await channelController.deleteUserFromChannel(
+        userId,
+        channelId,
+      );
+
+      expect(response).toEqual({
+        message: 'User not found in the channel',
+      });
+      expect(channelService.deleteUserFromChannel).toHaveBeenCalledWith(
+        userId,
+        channelId,
+      );
+      expect(channelService.deleteUserFromChannel).toHaveBeenCalledTimes(1);
     });
   });
 });
