@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateChannelDto } from './dto/createChannel.dto';
-import { ChannelService } from '../channel/channel.service';
+import { ChannelService } from './channel.service';
 import { Channel } from './schemas/channel.schema';
 
 @Controller('channels')
@@ -24,6 +24,7 @@ export class ChannelController {
     await this.channelService.DeleteChannel(id);
     return { message: 'Channel deleted successfully' };
   }
+
   @Post(':channelId/integrateUser')
   async integrateUserIntoChannel(
     @Param('channelId') channelId: string,
