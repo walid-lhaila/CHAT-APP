@@ -8,10 +8,14 @@ export class Channel {
   @Prop({ required: true })
   Title: string;
 
-  @Prop({ type: [Number], required: true })
+  @Prop({ type: [String], required: true })
   members: string[];
 
-  @Prop({ required: true, enum: ['public', 'private', 'conversation'] })
+  @Prop({
+    required: true,
+    enum: ['public', 'private', 'conversation'],
+    default: 'private',
+  })
   type: string;
 
   @Prop({ type: [String], required: true })

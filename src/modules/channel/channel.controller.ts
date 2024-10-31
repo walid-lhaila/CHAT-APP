@@ -74,4 +74,12 @@ export class ChannelController {
   ) {
     return this.channelService.AddBadWords(channelId, badWords);
   }
+
+  @Patch(':channelId/UpdateBadWords')
+  async removeBadWords(
+    @Param('channelId') channelId: string,
+    @Body('badWords') badWords: string[],
+  ) {
+    return this.channelService.RemoveBadWords(channelId, badWords);
+  }
 }

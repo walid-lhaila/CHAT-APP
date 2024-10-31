@@ -72,15 +72,21 @@ export class ChannelService {
 
   async deleteUserFromChannel(userId: string, channelId: string) {
     try {
+      const channel = await this.channelModel.findById(channelId);
+
+      if (!channel) {
+        return { message: 'Channel not found' };
+      }
+
+      if (!channel.members.includes(userId)) {
+        return { message: 'User not found in the channel' }; // Vérification correcte ici
+      }
+
       const updatedChannel = await this.channelModel.findByIdAndUpdate(
         channelId,
         { $pull: { members: userId } },
         { new: true },
       );
-
-      if (!updatedChannel) {
-        return { message: 'Channel not found' };
-      }
 
       return {
         message: 'User successfully deleted from the channel',
@@ -121,6 +127,37 @@ export class ChannelService {
       };
     } catch (error) {
       throw new Error('Error adding bad words to channel: ' + error.message);
+    }
+  }
+
+  async RemoveBadWords(channelId: string, badWords: string[]) {
+    try {
+      const channel = await this.channelModel.findById(channelId);
+
+      if (!channel) {
+        return { message: 'Channel not found' };
+      }
+
+      const wordsToRemove = badWords.filter((word) =>
+        channel.badWords.includes(word),
+      );
+
+      if (wordsToRemove.length === 0) {
+        return { message: "this word dosn't exist in table bad words" };
+      }
+
+      const updatedChannel = await this.channelModel.findByIdAndUpdate(
+        channelId,
+        { $pull: { badWords: { $in: wordsToRemove } } },
+        { new: true },
+      );
+
+      return {
+        message: 'Bad words successfully removed from the channel',
+        channel: updatedChannel,
+      };
+    } catch (err) {
+      throw new Error('Error removing bad words from channel: ' + err.message);
     }
   }
 }
