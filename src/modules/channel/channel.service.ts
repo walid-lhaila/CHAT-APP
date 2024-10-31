@@ -33,4 +33,28 @@ export class ChannelService {
   async DeleteChannel(id: string): Promise<void> {
     await this.channelModel.findByIdAndDelete(id).exec();
   }
+
+  async integrationUsersIntoChannel(
+    channelId: string,
+    userId: string,
+  ): Promise<any> {
+    try {
+      const updatedChannel = await this.channelModel.findByIdAndUpdate(
+        channelId,
+        { $addToSet: { members: userId } },
+        { new: true },
+      );
+
+      if (!updatedChannel) {
+        return { message: 'Channel not found' };
+      }
+
+      return {
+        message: 'User successfully integrated into the channel',
+        channel: updatedChannel,
+      };
+    } catch (error) {
+      throw new Error('Error integrating user into channel: ' + error.message);
+    }
+  }
 }

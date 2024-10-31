@@ -19,4 +19,5 @@ export class Rating extends Document {
 }
 
 
+export type RatingDocument = Rating & Document
 export const RatingSchema = SchemaFactory.createForClass(Rating);
