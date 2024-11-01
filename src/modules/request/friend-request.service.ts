@@ -6,25 +6,53 @@ import { UpdateFriendRequestDto } from "./dto/update-friend-request.dto";
 import { InjectModel } from "@nestjs/mongoose";
 
 @Injectable()
-export class FriendRequestService{
+export class FriendRequestService {
     constructor(
         @InjectModel(friendRequest.name) private friendRequestModel: Model<friendRequestDocument>,
-    ){}
+    ) {}
 
-    async create(CreateFriendRequestDto: CreateFriendRequestDto): Promise<friendRequest>{
-        const friendRequest = new this.friendRequestModel(CreateFriendRequestDto);
+    async create(createFriendRequestDto: CreateFriendRequestDto): Promise<friendRequest> {
+        const friendRequest = new this.friendRequestModel(createFriendRequestDto);
         return friendRequest.save();
     }
-    async update(id:string, UpdateFriendRequestDto: UpdateFriendRequestDto): Promise<friendRequest>{
+
+    async update(id: string, updateFriendRequestDto: UpdateFriendRequestDto): Promise<friendRequest> {
         const friendRequest = await this.friendRequestModel.findByIdAndUpdate(
             id,
-            {status: UpdateFriendRequestDto.status},
-            {new: true}
+            { status: updateFriendRequestDto.status },
+            { new: true }
         );
-        return friendRequest.save();
-    }
-    async getFriendRequestForUser(userId: string): Promise<friendRequest[]> {
-        return this.friendRequestModel.find({reciever: userId, status:'pending'}).populate('sender', 'username')
+        if (!friendRequest) {
+            throw new NotFoundException(`Friend request with id ${id} not found`);
+        }
+        return friendRequest;
     }
 
+    async getFriendRequestsForUser(userId: string): Promise<friendRequest[]> {
+        return this.friendRequestModel.find({ receiver: userId, status: 'pending' }).populate('sender', 'username');
+    }
+
+    async acceptFriendRequest(id: string): Promise<friendRequest> {
+        const friendRequest = await this.friendRequestModel.findByIdAndUpdate(
+            id,
+            { status: 'accepted' },
+            { new: true }
+        );
+        if (!friendRequest) {
+            throw new NotFoundException(`Friend request with id ${id} not found`);
+        }
+        return friendRequest;
+    }
+
+    async denyFriendRequest(id: string): Promise<friendRequest> {
+        const friendRequest = await this.friendRequestModel.findByIdAndUpdate(
+            id,
+            { status: 'denied' },
+            { new: true }
+        );
+        if (!friendRequest) {
+            throw new NotFoundException(`Friend request with id ${id} not found`);
+        }
+        return friendRequest;
+    }
 }

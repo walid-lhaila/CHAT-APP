@@ -12,8 +12,9 @@ export class friendRequest  {
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
     sender: Types.ObjectId;
 
-    @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-    recevier: Types.ObjectId;
+        @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+    receiver: Types.ObjectId; 
+
 
     @Prop({ required: true, enum: ['pending', 'accepted', 'rejected'], default: 'pending' })
     status: string;
