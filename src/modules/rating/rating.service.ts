@@ -18,7 +18,7 @@ export class RatingService {
             const raterObjectId = new Types.ObjectId(raterId);
 
 
-            let ratingDocument = await this.ratingModel.findOne({ channelId, user: userId });
+            let ratingDocument = await this.ratingModel.findOne({ channel: channelId, user: userId });
 
             if(ratingDocument){
                 const existingRating = ratingDocument.ratings.find(r => r.raterId.toString() === raterId);
@@ -34,7 +34,7 @@ export class RatingService {
                 return ratingDocument.save();
             } else {
                 ratingDocument = new this.ratingModel({
-                    channelId,
+                    channel: channelId,
                     user: userId,
                     totalScore: score,
                     ratings: [{ raterId: raterObjectId, score }],

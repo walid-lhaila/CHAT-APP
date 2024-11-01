@@ -1,8 +1,5 @@
 import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { RatingService } from './rating.service';
-import { channel } from 'diagnostics_channel';
-
-
 
 
 
@@ -19,7 +16,7 @@ export class RatingController {
         @Body('userId') userId: string,
         @Body('score') score: number,
     ) {
-        if(channelId || !userId || !raterId || score === undefined) {
+        if(!channelId || !userId || !raterId || score === undefined) {
             throw new BadRequestException('channelId, raterId, userId, and score are required');
         }
 

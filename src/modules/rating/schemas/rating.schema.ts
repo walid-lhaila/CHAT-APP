@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { max, min } from 'class-validator';
 import { Document, Types } from 'mongoose';
 
 
@@ -11,7 +10,7 @@ export class Rating extends Document {
   user: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Channel', required: true })
-  Channel: Types.ObjectId;
+  channel: Types.ObjectId;
 
   @Prop({ default: 0})
   totalScore: number;
