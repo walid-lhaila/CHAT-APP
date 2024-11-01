@@ -1,9 +1,9 @@
 import { IsArray, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 export enum Type {
-  'public',
-  'private',
-  'conversation',
+  public = 'public',
+  private = 'private',
+  conversation = 'conversation',
 }
 
 export class CreateChannelDto {
@@ -18,9 +18,13 @@ export class CreateChannelDto {
   @IsString()
   @IsNotEmpty()
   @IsEnum(Type)
-  type: string;
+  type: Type;
 
   @IsArray()
   @IsNotEmpty()
   badWords: string[];
+
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 }

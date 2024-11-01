@@ -11,22 +11,25 @@ export class ChannelService {
   ) {}
 
   async CreateChannel(createChannelDto: CreateChannelDto): Promise<Channel> {
-    const { Title, members, type, badWords } = createChannelDto;
+    const { Title, members, type, badWords, userId } = createChannelDto;
 
     const newChannel = new this.channelModel({
       Title,
       members,
       type,
       badWords,
+      userId,
     });
+
     try {
       return await newChannel.save();
     } catch (err) {
-      console.error('err', err);
+      console.error('Error creating channel:', err.message);
+      throw new Error('Unable to create channel. Please try again.');
     }
   }
 
-  async findAll(): Promise<Channel[]> {
+  async findAllChannel(): Promise<Channel[]> {
     return await this.channelModel.find().exec();
   }
 
@@ -55,6 +58,121 @@ export class ChannelService {
       };
     } catch (error) {
       throw new Error('Error integrating user into channel: ' + error.message);
+    }
+  }
+
+  async updateChannel(channelId: string, updatedChannel: Channel) {
+    try {
+      return await this.channelModel.findByIdAndUpdate(
+        channelId,
+        updatedChannel,
+        { new: true },
+      );
+    } catch (error) {
+      throw new Error('Error updating channel: ' + error.message);
+    }
+  }
+
+  async deleteUserFromChannel(userId: string, channelId: string) {
+    try {
+      const channel = await this.channelModel.findById(channelId);
+
+      if (!channel) {
+        return { message: 'Channel not found' };
+      }
+
+      if (!channel.members.includes(userId)) {
+        return { message: 'User not found in the channel' };
+      }
+
+      const updatedChannel = await this.channelModel.findByIdAndUpdate(
+        channelId,
+        { $pull: { members: userId } },
+        { new: true },
+      );
+
+      return {
+        message: 'User successfully deleted from the channel',
+        channel: updatedChannel,
+      };
+    } catch (error) {
+      throw new Error('Error deleting user from channel: ' + error.message);
+    }
+  }
+
+  async GetAllChannelWhereTypeIsPublic() {
+    try {
+      const channels = await this.channelModel.find({ type: 'public' });
+      if (channels.length === 0) {
+        return { message: 'no channel exist' };
+      }
+      return channels;
+    } catch (error) {
+      throw new Error('Erreur getting channel: ' + error.message);
+    }
+  }
+
+  async AddBadWords(channelId: string, badWords: string[]) {
+    try {
+      const channel = await this.channelModel.findByIdAndUpdate(
+        channelId,
+        { $push: { badWords: { $each: badWords } } },
+        { new: true },
+      );
+
+      if (!channel) {
+        return { message: 'Channel not found' };
+      }
+
+      return {
+        message: 'Bad words successfully added to the channel',
+        channel: channel,
+      };
+    } catch (error) {
+      throw new Error('Error adding bad words to channel: ' + error.message);
+    }
+  }
+
+  async RemoveBadWords(channelId: string, badWords: string[]) {
+    try {
+      const channel = await this.channelModel.findById(channelId);
+
+      if (!channel) {
+        return { message: 'Channel not found' };
+      }
+
+      const wordsToRemove = badWords.filter((word) =>
+        channel.badWords.includes(word),
+      );
+
+      if (wordsToRemove.length === 0) {
+        return { message: "this word dosn't exist in table bad words" };
+      }
+
+      const updatedChannel = await this.channelModel.findByIdAndUpdate(
+        channelId,
+        { $pull: { badWords: { $in: wordsToRemove } } },
+        { new: true },
+      );
+
+      return {
+        message: 'Bad words successfully removed from the channel',
+        channel: updatedChannel,
+      };
+    } catch (err) {
+      throw new Error('Error removing bad words from channel: ' + err.message);
+    }
+  }
+
+  async findChannelByUserId(userId: string): Promise<Channel[]> {
+    try {
+      const channels = await this.channelModel.find({ userId: userId }).exec();
+      if (channels.length === 0) {
+        throw  new Error('Channel not found for this user')
+      }
+      return channels;
+    } catch (error) {
+      throw new Error('Erreur getting channel: ' + error.message);
     }
   }
 }

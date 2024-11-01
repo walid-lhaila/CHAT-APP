@@ -11,11 +11,12 @@ export class RatingController {
 
     constructor(private readonly ratingService: RatingService) {}
 
+
     @Post('/rate')
     async createRating(
         @Body('channelId') channelId: string,
-        @Body('userId') userId: string,
         @Body('raterId') raterId: string,
+        @Body('userId') userId: string,
         @Body('score') score: number,
     ) {
         if(channelId || !userId || !raterId || score === undefined) {
