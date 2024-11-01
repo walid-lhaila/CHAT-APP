@@ -1,5 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import * as mongoose from "mongoose";
+import { Document } from "mongoose";
 
 export type ChannelDocument = Channel & Document;
 
@@ -13,13 +14,13 @@ export class Channel {
 
   @Prop({
     required: true,
-    enum: ['public', 'private', 'conversation'],
-    default: 'private',
+    enum: ["public", "private", "conversation"],
+    default: "private",
   })
   type: string;
 
-  @Prop({ required: true })
-  userId: Object.type.type;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "User", required: true })
+  userId: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: [String], required: true })
   badWords: string[];
