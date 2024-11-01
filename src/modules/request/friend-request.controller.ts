@@ -1,27 +1,37 @@
-import { Controller, Get, Post, Put, Param, Body } from "@nestjs/common";
-import { friendRequestDocument } from "./schemas/friend-request.schema";
-import { CreateFriendRequestDto } from "./dto/create-friend-request.dto";
-import { UpdateFriendRequestDto } from "./dto/update-friend-request.dto";
-import { FriendRequestService } from "./friend-request.service";
-
-
-@Controller('friend-requests')
-export class friendRequestCotroller {
-    constructor(private readonly friendrequestService: FriendRequestService) { }
-
-    @Post()
-
-    async sendFriendRequest(@Body() createFriendRequestDto: CreateFriendRequestDto) {
-        return this.friendrequestService.create(createFriendRequestDto)
+import {
+    Controller,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Body,
+    NotFoundException,
+  } from '@nestjs/common';
+  import { FriendRequestService } from './friend-request.service';
+  import { CreateFriendRequestDto } from './dto/create-friend-request.dto';
+  
+  @Controller('friend-requests')
+  export class FriendRequestController {
+    constructor(private readonly friendRequestService: FriendRequestService) {}
+  
+    @Post('/create')
+    async create(@Body() createFriendRequestDto: CreateFriendRequestDto) {
+      return this.friendRequestService.create(createFriendRequestDto);
     }
-
-    @Put('/:id')
-    async respondToFriendRequest(
-        @Param('id') id: string,
-        @Body() updateFriendRequestDto: UpdateFriendRequestDto,
-    ) {
-        return this.friendrequestService.update(id, updateFriendRequestDto)
-        
+  
+    @Get('/user/:userId')
+    async getFriendRequestsForUser(@Param('userId') userId: string) {
+      return this.friendRequestService.getFriendRequestsForUser(userId);
     }
-    
-}
+  
+    @Patch('/accept/:id')
+    async acceptFriendRequest(@Param('id') id: string) {
+      return this.friendRequestService.acceptFriendRequest(id);
+    }
+  
+    @Patch('/deny/:id')
+    async denyFriendRequest(@Param('id') id: string) {
+      return this.friendRequestService.denyFriendRequest(id);
+    }
+  }
+  

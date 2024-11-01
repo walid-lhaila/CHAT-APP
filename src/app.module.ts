@@ -6,6 +6,7 @@ import { UserModule } from './modules/user/user.module';
 import { ChannelModule } from './modules/channel/channel.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { RatingModule } from './modules/rating/rating.module';
+import { FriendRequestModule } from './modules/request/friend-request.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { RatingModule } from './modules/rating/rating.module';
     ChannelModule,
     AuthModule,
     RatingModule,
+    FriendRequestModule,
 
   ],
 })

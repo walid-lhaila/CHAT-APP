@@ -1,13 +1,15 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from 'class-validator';
+
+export class CreateFriendRequestDto {
+  @IsNotEmpty()
+  @IsString()
+  sender: string; 
+
+  @IsNotEmpty()
+  @IsString()
+  receiver: string; 
 
 
-export class CreateFriendRequestDto  {
-
-    @IsString()
-    senderId: string;
-
-    @IsString()
-    recieverId: string;
     
     @IsString()
     status: string;
