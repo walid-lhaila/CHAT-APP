@@ -29,7 +29,6 @@ export class ChannelService {
     }
   }
 
-
   async findAllChannel(): Promise<Channel[]> {
     return await this.channelModel.find().exec();
   }
@@ -83,7 +82,7 @@ export class ChannelService {
       }
 
       if (!channel.members.includes(userId)) {
-        return { message: 'User not found in the channel' }; // Vérification correcte ici
+        return { message: 'User not found in the channel' };
       }
 
       const updatedChannel = await this.channelModel.findByIdAndUpdate(
@@ -162,6 +161,18 @@ export class ChannelService {
       };
     } catch (err) {
       throw new Error('Error removing bad words from channel: ' + err.message);
+    }
+  }
+
+  async findChannelByUserId(userId: string): Promise<Channel[]> {
+    try {
+      const channels = await this.channelModel.find({ userId: userId }).exec();
+      if (channels.length === 0) {
+        throw  new Error('Channel not found for this user')
+      }
+      return channels;
+    } catch (error) {
+      throw new Error('Erreur getting channel: ' + error.message);
     }
   }
 }
