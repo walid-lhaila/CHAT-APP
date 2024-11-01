@@ -19,7 +19,7 @@ export class Channel {
   type: string;
 
   @Prop({ required: true })
-  userId: string;
+  userId: Object.type.type;
 
   @Prop({ type: [String], required: true })
   badWords: string[];
