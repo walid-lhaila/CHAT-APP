@@ -86,4 +86,10 @@ export class ChannelController {
   ) {
     return this.channelService.RemoveBadWords(channelId, badWords);
   }
+
+  @Get(':userId/channels')
+  async getChannelByUserId(@Param('userId') userId: string) {
+    console.log(userId);
+    return this.channelService.findChannelByUserId(userId);
+  }
 }
