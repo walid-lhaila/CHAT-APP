@@ -1,25 +1,27 @@
 import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { RatingService } from './rating.service';
+import { channel } from 'diagnostics_channel';
+
+
+
 
 
 @Controller('ratings')
-
 export class RatingController {
 
     constructor(private readonly ratingService: RatingService) {}
 
-
-    @Post('rate')
+    @Post('/rate')
     async createRating(
-
-        @Body('raterId') raterId: string,
+        @Body('channelId') channelId: string,
         @Body('userId') userId: string,
+        @Body('raterId') raterId: string,
         @Body('score') score: number,
     ) {
-        if(!raterId || !userId || score === undefined) {
-            throw new BadRequestException('raterId, userId, and score are required');
+        if(channelId || !userId || !raterId || score === undefined) {
+            throw new BadRequestException('channelId, raterId, userId, and score are required');
         }
 
-        return this.ratingService.createRating(raterId, userId, score);
+        return this.ratingService.createRating(channelId, userId, raterId, score);
     }
 }
