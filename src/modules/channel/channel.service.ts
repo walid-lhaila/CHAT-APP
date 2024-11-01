@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Channel, ChannelDocument } from './schemas/channel.schema';
-import { CreateChannelDto } from './dto/createChannel.dto';
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Channel, ChannelDocument } from "./schemas/channel.schema";
+import { CreateChannelDto } from "./dto/createChannel.dto";
 
 @Injectable()
 export class ChannelService {
@@ -24,8 +24,8 @@ export class ChannelService {
     try {
       return await newChannel.save();
     } catch (err) {
-      console.error('Error creating channel:', err.message);
-      throw new Error('Unable to create channel. Please try again.');
+      console.error("Error creating channel:", err.message);
+      throw new Error("Unable to create channel. Please try again.");
     }
   }
 
@@ -49,15 +49,15 @@ export class ChannelService {
       );
 
       if (!updatedChannel) {
-        return { message: 'Channel not found' };
+        return { message: "Channel not found" };
       }
 
       return {
-        message: 'User successfully integrated into the channel',
+        message: "User successfully integrated into the channel",
         channel: updatedChannel,
       };
     } catch (error) {
-      throw new Error('Error integrating user into channel: ' + error.message);
+      throw new Error("Error integrating user into channel: " + error.message);
     }
   }
 
@@ -69,7 +69,7 @@ export class ChannelService {
         { new: true },
       );
     } catch (error) {
-      throw new Error('Error updating channel: ' + error.message);
+      throw new Error("Error updating channel: " + error.message);
     }
   }
 
@@ -78,11 +78,11 @@ export class ChannelService {
       const channel = await this.channelModel.findById(channelId);
 
       if (!channel) {
-        return { message: 'Channel not found' };
+        return { message: "Channel not found" };
       }
 
       if (!channel.members.includes(userId)) {
-        return { message: 'User not found in the channel' };
+        return { message: "User not found in the channel" };
       }
 
       const updatedChannel = await this.channelModel.findByIdAndUpdate(
@@ -92,23 +92,23 @@ export class ChannelService {
       );
 
       return {
-        message: 'User successfully deleted from the channel',
+        message: "User successfully deleted from the channel",
         channel: updatedChannel,
       };
     } catch (error) {
-      throw new Error('Error deleting user from channel: ' + error.message);
+      throw new Error("Error deleting user from channel: " + error.message);
     }
   }
 
   async GetAllChannelWhereTypeIsPublic() {
     try {
-      const channels = await this.channelModel.find({ type: 'public' });
+      const channels = await this.channelModel.find({ type: "public" });
       if (channels.length === 0) {
-        return { message: 'no channel exist' };
+        return { message: "no channel exist" };
       }
       return channels;
     } catch (error) {
-      throw new Error('Erreur getting channel: ' + error.message);
+      throw new Error("Erreur getting channel: " + error.message);
     }
   }
 
@@ -121,15 +121,15 @@ export class ChannelService {
       );
 
       if (!channel) {
-        return { message: 'Channel not found' };
+        return { message: "Channel not found" };
       }
 
       return {
-        message: 'Bad words successfully added to the channel',
+        message: "Bad words successfully added to the channel",
         channel: channel,
       };
     } catch (error) {
-      throw new Error('Error adding bad words to channel: ' + error.message);
+      throw new Error("Error adding bad words to channel: " + error.message);
     }
   }
 
@@ -138,7 +138,7 @@ export class ChannelService {
       const channel = await this.channelModel.findById(channelId);
 
       if (!channel) {
-        return { message: 'Channel not found' };
+        return { message: "Channel not found" };
       }
 
       const wordsToRemove = badWords.filter((word) =>
@@ -156,23 +156,27 @@ export class ChannelService {
       );
 
       return {
-        message: 'Bad words successfully removed from the channel',
+        message: "Bad words successfully removed from the channel",
         channel: updatedChannel,
       };
     } catch (err) {
-      throw new Error('Error removing bad words from channel: ' + err.message);
+      throw new Error("Error removing bad words from channel: " + err.message);
     }
   }
 
   async findChannelByUserId(userId: string): Promise<Channel[]> {
     try {
-      const channels = await this.channelModel.find({ userId: userId }).exec();
-      if (channels.length === 0) {
-        throw  new Error('Channel not found for this user')
+      const channels = await this.channelModel
+        .find({ userId })
+        .populate("userId")
+        .exec();
+
+      if (!channels || channels.length === 0) {
+        throw new Error("No channels found for this user");
       }
       return channels;
     } catch (error) {
-      throw new Error('Erreur getting channel: ' + error.message);
+      throw new Error("Error getting channels: " + error.message);
     }
   }
 }
