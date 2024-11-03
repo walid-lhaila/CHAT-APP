@@ -9,8 +9,8 @@ export class Channel {
   @Prop({ required: true })
   Title: string;
 
-  @Prop({ type: [String], required: true })
-  members: string[];
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }] })
+  members: mongoose.Schema.Types.ObjectId[];
 
   @Prop({
     required: true,

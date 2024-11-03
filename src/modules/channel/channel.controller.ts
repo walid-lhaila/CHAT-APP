@@ -89,7 +89,6 @@ export class ChannelController {
 
   @Get(":userId/channels")
   async getChannelByUserId(@Param("userId") userId: string) {
-    console.log(userId);
     return this.channelService.findChannelByUserId(userId);
   }
 }
