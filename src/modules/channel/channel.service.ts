@@ -30,7 +30,11 @@ export class ChannelService {
   }
 
   async findAllChannel(): Promise<Channel[]> {
-    return await this.channelModel.find().exec();
+    return await this.channelModel
+      .find()
+      .populate("members")
+      .populate("userId")
+      .exec();
   }
 
   async DeleteChannel(id: string): Promise<void> {
@@ -79,10 +83,6 @@ export class ChannelService {
 
       if (!channel) {
         return { message: "Channel not found" };
-      }
-
-      if (!channel.members.includes(userId)) {
-        return { message: "User not found in the channel" };
       }
 
       const updatedChannel = await this.channelModel.findByIdAndUpdate(

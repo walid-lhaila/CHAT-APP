@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
-import { getMongoConfig } from './config/database.config';
-import { UserModule } from './modules/user/user.module';
-import { ChannelModule } from './modules/channel/channel.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { RatingModule } from './modules/rating/rating.module';
-import { FriendRequestModule } from './modules/request/friend-request.module';
+import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { MongooseModule } from "@nestjs/mongoose";
+import { getMongoConfig } from "./config/database.config";
+import { UserModule } from "./modules/user/user.module";
+import { ChannelModule } from "./modules/channel/channel.module";
+import { AuthModule } from "./modules/auth/auth.module";
+import { RatingModule } from "./modules/rating/rating.module";
+import { FriendRequestModule } from "./modules/request/friend-request.module";
 
 @Module({
   imports: [
@@ -25,7 +25,6 @@ import { FriendRequestModule } from './modules/request/friend-request.module';
     AuthModule,
     RatingModule,
     FriendRequestModule,
-
   ],
 })
 export class AppModule {}

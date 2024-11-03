@@ -1,9 +1,9 @@
-import { IsArray, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsString } from "class-validator";
 
 export enum Type {
-  public = 'public',
-  private = 'private',
-  conversation = 'conversation',
+  public = "public",
+  private = "private",
+  conversation = "conversation",
 }
 
 export class CreateChannelDto {
