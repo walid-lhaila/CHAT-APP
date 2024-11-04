@@ -28,7 +28,6 @@ export class ChannelService {
       throw new Error("Unable to create channel. Please try again.");
     }
   }
-
   async findAllChannel(): Promise<Channel[]> {
     return await this.channelModel
       .find()
@@ -36,11 +35,9 @@ export class ChannelService {
       .populate("userId")
       .exec();
   }
-
   async DeleteChannel(id: string): Promise<void> {
     await this.channelModel.findByIdAndDelete(id).exec();
   }
-
   async integrationUsersIntoChannel(
     channelId: string,
     userId: string,
@@ -64,7 +61,6 @@ export class ChannelService {
       throw new Error("Error integrating user into channel: " + error.message);
     }
   }
-
   async updateChannel(channelId: string, updatedChannel: Channel) {
     try {
       return await this.channelModel.findByIdAndUpdate(
@@ -76,7 +72,6 @@ export class ChannelService {
       throw new Error("Error updating channel: " + error.message);
     }
   }
-
   async deleteUserFromChannel(userId: string, channelId: string) {
     try {
       const channel = await this.channelModel.findById(channelId);
@@ -99,10 +94,11 @@ export class ChannelService {
       throw new Error("Error deleting user from channel: " + error.message);
     }
   }
-
   async GetAllChannelWhereTypeIsPublic() {
     try {
-      const channels = await this.channelModel.find({ type: "public" });
+      const channels = await this.channelModel
+        .find({ type: "public" })
+        .populate('userId');
       if (channels.length === 0) {
         return { message: "no channel exist" };
       }
@@ -111,7 +107,6 @@ export class ChannelService {
       throw new Error("Erreur getting channel: " + error.message);
     }
   }
-
   async AddBadWords(channelId: string, badWords: string[]) {
     try {
       const channel = await this.channelModel.findByIdAndUpdate(
@@ -132,7 +127,6 @@ export class ChannelService {
       throw new Error("Error adding bad words to channel: " + error.message);
     }
   }
-
   async RemoveBadWords(channelId: string, badWords: string[]) {
     try {
       const channel = await this.channelModel.findById(channelId);
@@ -163,7 +157,6 @@ export class ChannelService {
       throw new Error("Error removing bad words from channel: " + err.message);
     }
   }
-
   async findChannelByUserId(userId: string): Promise<Channel[]> {
     try {
       const channels = await this.channelModel
