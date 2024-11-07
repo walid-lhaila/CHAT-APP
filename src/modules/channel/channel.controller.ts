@@ -76,7 +76,11 @@ export class ChannelController {
     @Param("channelId") channelId: string,
     @Body("badWords") badWords: string[],
   ) {
-    return this.channelService.AddBadWords(channelId, badWords);
+    try {
+      return await this.channelService.AddBadWords(channelId, badWords);
+    } catch (error) {
+      throw new Error("Error adding bad words: " + error.message);
+    }
   }
 
   @Patch(":channelId/UpdateBadWords")

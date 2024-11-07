@@ -1,10 +1,10 @@
-import { ChannelController } from './channel.controller';
-import { ChannelService } from './channel.service';
-import { Test, TestingModule } from '@nestjs/testing';
-import { CreateChannelDto } from './dto/createChannel.dto';
-import { Channel } from './schemas/channel.schema';
+import { ChannelController } from "./channel.controller";
+import { ChannelService } from "./channel.service";
+import { Test, TestingModule } from "@nestjs/testing";
+import { CreateChannelDto } from "./dto/createChannel.dto";
+import { Channel } from "./schemas/channel.schema";
 
-describe('Channel Controller', () => {
+describe("Channel Controller", () => {
   let channelController: ChannelController;
   let channelService: ChannelService;
 
@@ -26,11 +26,11 @@ describe('Channel Controller', () => {
   });
 
   describe("Creation d'un nouveau canal", () => {
-    test('test creation un canal et renderer un message de success', async () => {
+    test("test creation un canal et renderer un message de success", async () => {
       const createChannelDto: CreateChannelDto = {
-        Title: 'Sample Channel',
-        members: ['5'],
-        type: 'public',
+        Title: "Sample Channel",
+        members: ["5"],
+        type: "public",
         badWords: [],
       };
 
@@ -43,7 +43,7 @@ describe('Channel Controller', () => {
       const response = await channelController.create(createChannelDto);
 
       expect(response).toEqual({
-        message: 'Channel created successfully',
+        message: "Channel created successfully",
         channel: createdChannel,
       });
       expect(channelService.CreateChannel).toHaveBeenCalledWith(
@@ -53,16 +53,16 @@ describe('Channel Controller', () => {
     });
   });
 
-  describe('Recuperation de tous les canaux', () => {
-    test('devrait retourner une liste de canaux', async () => {
+  describe("Recuperation de tous les canaux", () => {
+    test("devrait retourner une liste de canaux", async () => {
       const channelList: Channel[] = [
         {
-          Title: 'Channel 1',
-          members: ['1', '2'],
-          type: 'public',
+          Title: "Channel 1",
+          members: ["1", "2"],
+          type: "public",
           badWords: [],
         },
-        { Title: 'Channel 2', members: ['3'], type: 'private', badWords: [] },
+        { Title: "Channel 2", members: ["3"], type: "private", badWords: [] },
       ];
 
       mockChannelService.findAllChannel.mockResolvedValue(channelList);
@@ -75,23 +75,23 @@ describe('Channel Controller', () => {
     });
   });
 
-  describe('Suppression dun canal', () => {
-    test('devrait supprimer un canal et renvoyer un message de succes', async () => {
-      const channelId = '12345';
+  describe("Suppression dun canal", () => {
+    test("devrait supprimer un canal et renvoyer un message de succes", async () => {
+      const channelId = "12345";
 
       mockChannelService.DeleteChannel.mockResolvedValue({ deleted: true });
 
       const response = await channelController.delete(channelId);
 
-      expect(response).toEqual({ message: 'Channel deleted successfully' });
+      expect(response).toEqual({ message: "Channel deleted successfully" });
       expect(channelService.DeleteChannel).toHaveBeenCalledWith(channelId);
       expect(channelService.DeleteChannel).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('Suppression users from channel', () => {
-    const channelId = '12345';
-    const userId = '5';
+  describe("Suppression users from channel", () => {
+    const channelId = "12345";
+    const userId = "5";
     test("devrait supprimer un user d'un canal et renvoyer un message de succès", async () => {
       mockChannelService.deleteUserFromChannel.mockResolvedValue(undefined);
 
@@ -101,7 +101,7 @@ describe('Channel Controller', () => {
       );
 
       expect(response).toEqual({
-        message: 'User deleted from channel successfully',
+        message: "User deleted from channel successfully",
       });
       expect(channelService.deleteUserFromChannel).toHaveBeenCalledWith(
         userId,
@@ -112,7 +112,7 @@ describe('Channel Controller', () => {
 
     test("user doesn't exist", async () => {
       mockChannelService.deleteUserFromChannel.mockResolvedValue({
-        message: 'User not found in the channel',
+        message: "User not found in the channel",
       });
 
       const response = await channelController.deleteUserFromChannel(
@@ -121,7 +121,7 @@ describe('Channel Controller', () => {
       );
 
       expect(response).toEqual({
-        message: 'User not found in the channel',
+        message: "User not found in the channel",
       });
       expect(channelService.deleteUserFromChannel).toHaveBeenCalledWith(
         userId,
