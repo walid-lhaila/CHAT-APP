@@ -102,7 +102,9 @@ export class ChannelService {
 
   async GetAllChannelWhereTypeIsPublic() {
     try {
-      const channels = await this.channelModel.find({ type: "public" });
+      const channels = await this.channelModel
+        .find({ type: "public" })
+        .populate("userId");
       if (channels.length === 0) {
         return { message: "no channel exist" };
       }
@@ -126,7 +128,7 @@ export class ChannelService {
 
       return {
         message: "Bad words successfully added to the channel",
-        channel: channel,
+        badWords: channel.badWords,
       };
     } catch (error) {
       throw new Error("Error adding bad words to channel: " + error.message);
@@ -179,4 +181,6 @@ export class ChannelService {
       throw new Error("Error getting channels: " + error.message);
     }
   }
+
+
 }
