@@ -95,6 +95,4 @@ export class ChannelController {
   async getChannelByUserId(@Param("userId") userId: string) {
     return this.channelService.findChannelByUserId(userId);
   }
-  @Get(':channelID')
-  async getAllUsersFromChannel(channel)
 }
